@@ -88,9 +88,7 @@ def paired_bootstrap(a: Sequence[float], b: Sequence[float], *, n_resamples: int
     x, y = np.asarray(a, dtype=float), np.asarray(b, dtype=float)
     if x.ndim != 1 or x.shape != y.shape:
         raise ValueError(f"paired samples must be 1-D and aligned, got {x.shape} vs {y.shape}")
-    if x.size == 0:
-        raise ValueError("paired bootstrap needs at least one item")
-    if np.array_equal(x, y):
+    if x.size == 0 or np.array_equal(x, y):   # no items, or no difference anywhere
         return (0.0, 0.0, 0.0)
     d = float(x.mean() - y.mean())
     if x.size == 1:                        # every resample is that one item
